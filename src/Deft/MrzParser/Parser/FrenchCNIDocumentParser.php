@@ -15,6 +15,11 @@ use Deft\MrzParser\Exception\ParseException;
  */
 class FrenchCNIDocumentParser extends AbstractParser
 {
+    public function support(string $mrz): bool
+    {
+        return strlen($mrz) === 72 && 'ID' === $this->getToken($mrz, 1, 2);
+    }
+
     /**
      * Extracts all the information from a MRZ string and returns a populated instance of TravelDocumentInterface
      *

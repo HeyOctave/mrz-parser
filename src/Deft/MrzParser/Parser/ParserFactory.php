@@ -7,17 +7,36 @@ use Deft\MrzParser\Exception\UnsupportedDocumentException;
 class ParserFactory
 {
     /**
+     * @var ParserInterface[]
+     */
+    private array $parsers = [];
+
+    public function __construct()
+    {
+        $this->addParser(new PassportParser());
+        $this->addParser(new TravelDocumentType1Parser());
+        $this->addParser(new FrenchCNIDocumentParser());
+        $this->addParser(new VehicleRegistrationDocumentParser());
+    }
+
+    public function addParser(ParserInterface $parser): void
+    {
+        $this->parsers[] = $parser;
+    }
+
+    /**
      * @param $mrzString
-     * @return AbstractParser
+     * @return ParserInterface
      * @throws UnsupportedDocumentException
      */
     public function create($mrzString)
     {
-        switch (strlen($mrzString)) {
-            case 88: return new PassportParser();
-            case 90: return new TravelDocumentType1Parser();
-            case 72: return new FrenchCNIDocumentParser();
-            default: throw new UnsupportedDocumentException("String length didn't match that of known document types");
+        foreach ($this->parsers as $parser) {
+            if ($parser->support($mrzString)) {
+                return $parser;
+            }
         }
+
+        throw new UnsupportedDocumentException("String length didn't match that of known document types");
     }
 }

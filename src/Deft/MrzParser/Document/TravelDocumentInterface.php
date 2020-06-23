@@ -2,7 +2,7 @@
 
 namespace Deft\MrzParser\Document;
 
-interface TravelDocumentInterface
+interface TravelDocumentInterface extends DocumentInterface
 {
     /**
      * The primary type of this document, one of the constants in TravelDocumentType.

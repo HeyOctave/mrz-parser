@@ -29,6 +29,11 @@ use Deft\MrzParser\Document\TravelDocumentType;
  */
 class PassportParser extends AbstractParser
 {
+    public function support(string $mrz): bool
+    {
+        return strlen($mrz) === 88 && 'P' === $this->getToken($mrz, 1);
+    }
+
     /**
      * Extracts all the information from a MRZ string and returns a populated instance of TravelDocumentInterface
      *

@@ -30,6 +30,11 @@ use Deft\MrzParser\Exception\ParseException;
  */
 class TravelDocumentType1Parser extends AbstractParser
 {
+    public function support(string $mrz): bool
+    {
+        return strlen($mrz) === 90 && in_array($this->getToken($mrz, 1), ['I', 'A', 'C']);
+    }
+
     /**
      * Extracts all the information from a MRZ string and returns a populated instance of TravelDocumentInterface
      *
